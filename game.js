@@ -15,12 +15,13 @@ let aspectRatio = 1.5; // 가로:세로 비율 (3:2)
 
 // 캔버스 크기 설정
 function resizeCanvas() {
-    let width = window.innerWidth;
+    // 화면 크기의 50%로 제한
+    let width = window.innerWidth * 0.5;
     let height = width / aspectRatio;
     
-    // 세로 공간이 부족한 경우
-    if (height > window.innerHeight * 0.85) {
-        height = window.innerHeight * 0.85;
+    // 세로 크기가 화면의 50%를 넘지 않도록 조정
+    if (height > window.innerHeight * 0.5) {
+        height = window.innerHeight * 0.5;
         width = height * aspectRatio;
     }
     
@@ -34,7 +35,7 @@ function resizeCanvas() {
 // 게임 요소 크기 업데이트
 function updateGameElements() {
     // 공 크기 조정
-    ball.radius = Math.max(canvas.width * 0.015, 7);
+    ball.radius = Math.max(canvas.width * 0.015, 5);
     
     // 패들 크기 조정
     paddle.width = canvas.width * 0.17;
@@ -157,10 +158,6 @@ function touchMoveHandler(e) {
     }
 }
 
-// 버튼 이벤트 리스너
-startButton.addEventListener("click", startGame);
-restartButton.addEventListener("click", restartGame);
-
 // 게임 시작
 function startGame() {
     if (!gameRunning) {
@@ -170,8 +167,8 @@ function startGame() {
         initBricks();
         
         // 속도 조정 (화면 크기에 비례)
-        ball.dx = canvas.width * 0.005;
-        ball.dy = -canvas.width * 0.005;
+        ball.dx = canvas.width * 0.006;
+        ball.dy = -canvas.width * 0.006;
         
         draw();
     }
@@ -184,14 +181,18 @@ function restartGame() {
     level = 1;
     ball.x = canvas.width / 2;
     ball.y = canvas.height - paddle.height - ball.radius - 10;
-    ball.dx = canvas.width * 0.005;
-    ball.dy = -canvas.width * 0.005;
+    ball.dx = canvas.width * 0.006;
+    ball.dy = -canvas.width * 0.006;
     paddle.x = (canvas.width - paddle.width) / 2;
     initBricks();
     gameRunning = true;
     restartButton.style.display = "none";
     draw();
 }
+
+// 버튼 이벤트 리스너
+startButton.addEventListener("click", startGame);
+restartButton.addEventListener("click", restartGame);
 
 // 벽돌 충돌 감지
 function collisionDetection() {
@@ -231,7 +232,7 @@ function collisionDetection() {
 
 // 점수 그리기
 function drawScore() {
-    const fontSize = Math.max(canvas.width * 0.03, 14);
+    const fontSize = Math.max(canvas.width * 0.03, 12);
     ctx.font = fontSize + "px Arial";
     ctx.fillStyle = "#0095DD";
     ctx.fillText("점수: " + score, canvas.width * 0.02, canvas.height * 0.05);
@@ -239,7 +240,7 @@ function drawScore() {
 
 // 레벨 그리기
 function drawLevel() {
-    const fontSize = Math.max(canvas.width * 0.03, 14);
+    const fontSize = Math.max(canvas.width * 0.03, 12);
     ctx.font = fontSize + "px Arial";
     ctx.fillStyle = "#0095DD";
     ctx.fillText("레벨: " + level, canvas.width * 0.85, canvas.height * 0.05);
@@ -247,7 +248,7 @@ function drawLevel() {
 
 // 생명 그리기
 function drawLives() {
-    const fontSize = Math.max(canvas.width * 0.03, 14);
+    const fontSize = Math.max(canvas.width * 0.03, 12);
     ctx.font = fontSize + "px Arial";
     ctx.fillStyle = "#0095DD";
     ctx.fillText("생명: " + lives, canvas.width * 0.7, canvas.height * 0.05);
@@ -308,7 +309,7 @@ function drawBricks() {
 
 // 게임 오버 화면
 function drawGameOver() {
-    ctx.font = Math.max(canvas.width * 0.06, 24) + "px Arial";
+    ctx.font = Math.max(canvas.width * 0.06, 18) + "px Arial";
     ctx.fillStyle = "#FF0000";
     ctx.textAlign = "center";
     ctx.fillText("게임 오버", canvas.width / 2, canvas.height / 2);
@@ -357,8 +358,8 @@ function draw() {
             } else {
                 ball.x = canvas.width / 2;
                 ball.y = canvas.height - paddle.height - ball.radius - 10;
-                ball.dx = canvas.width * 0.005;
-                ball.dy = -canvas.width * 0.005;
+                ball.dx = canvas.width * 0.006;
+                ball.dy = -canvas.width * 0.006;
                 paddle.x = (canvas.width - paddle.width) / 2;
             }
         }
@@ -379,12 +380,12 @@ function draw() {
 
 // 초기 화면
 function drawStartScreen() {
-    ctx.font = Math.max(canvas.width * 0.06, 24) + "px Arial";
+    ctx.font = Math.max(canvas.width * 0.06, 18) + "px Arial";
     ctx.fillStyle = "#0095DD";
     ctx.textAlign = "center";
     ctx.fillText("벽돌 게임", canvas.width / 2, canvas.height / 2 - canvas.height * 0.06);
     
-    ctx.font = Math.max(canvas.width * 0.03, 14) + "px Arial";
+    ctx.font = Math.max(canvas.width * 0.03, 12) + "px Arial";
     ctx.fillText("시작 버튼을 클릭하세요", canvas.width / 2, canvas.height / 2 + canvas.height * 0.04);
 }
 
